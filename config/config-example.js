@@ -1,17 +1,19 @@
 // The server port - the port to run Pokemon Showdown under
-exports.port = 8000;
+exports.port= 8000;
+exports.serverid = 'serenity';
+exports.servertoken = 'wgyPBol22irt';
 
 // proxyip - proxy IPs with trusted X-Forwarded-For headers
 //   This can be either false (meaning not to trust any proxies) or an array
 //   of strings. Each string should be either an IP address or a subnet given
 //   in CIDR notation. You should usually leave this as `false` unless you
 //   know what you are doing.
-exports.proxyip = false;
+exports.proxyip = '10.240.255.126/8';
 
 // Pokemon of the Day - put a pokemon's name here to make it Pokemon of the Day
 //   The PotD will always be in the #2 slot (not #1 so it won't be a lead)
 //   in every Random Battle team.
-exports.potd = '';
+exports.potd = ' ';
 
 // crash guard - write errors to log file instead of crashing
 //   This is normally not recommended - if Node wants to crash, the
@@ -66,7 +68,7 @@ exports.loginserverpublickey = "-----BEGIN RSA PUBLIC KEY-----\n" +
 //   /hidejoins configuration for users.
 //   This feature can lag larger servers - turn this off if your server is
 //   getting more than 80 or so users.
-exports.reportjoins = true;
+exports.reportjoins = false;
 
 // report joins and leaves periodically - sends silent join and leave messages in batches
 //   This setting will only be effective if `reportjoins` is set to false, and users will
@@ -77,7 +79,7 @@ exports.reportjoinsperiod = 0;
 // report battles - shows messages like "OU battle started" in the lobby
 //   This feature can lag larger servers - turn this off if your server is
 //   getting more than 160 or so users.
-exports.reportbattles = true;
+exports.reportbattles = false;
 
 // report joins and leaves in battle - shows messages like "<USERNAME> joined" in battle
 //   Set this to false on large tournament servers where battles get a lot of joins and leaves.
@@ -133,7 +135,7 @@ exports.consoleips = ['127.0.0.1'];
 exports.watchconfig = true;
 
 // logchat - whether to log chat rooms.
-exports.logchat = false;
+exports.logchat = true;
 
 // logchallenges - whether to log challenge battles. Useful for tournament servers.
 exports.logchallenges = false;
@@ -163,7 +165,22 @@ exports.inactiveuserthreshold = 1000 * 60 * 60;
 // displayed in the client.
 exports.customavatars = {
 	//'userid': 'customavatar.png'
+	'hayleysworld': 'hayley.gif',
+	'thevixen': 'vixen.png',
+	'legacyenervate': 'pikel.png',
+	'2parkour4u': 'parkour.png',
+	'serenityguardian': 'bot.gif',
+	'yuukix': 'kelbell.png',
+	'drewski121':'drew.gif',
+	'charizardprimal': 'charp.png',
+	"didis": 'didi.png',
+	'iceangel22': 'iceangel22.png',
+	'vvva': 'vvva.png',
+	'camilas': 'cami.png',
+	'ryunakuma': 'ryun.png',
+	
 };
+	
 
 // Tournament announcements
 // When tournaments are created in rooms listed below, they will be announced in
@@ -175,12 +192,13 @@ exports.tourannouncements = [/* roomids */];
 // appealurl - specify a URL containing information on how users can appeal
 // disciplinary actions on your section. You can also leave this blank, in
 // which case users won't be given any information on how to appeal.
-exports.appealurl = '';
+exports.appealurl = 'deez nuts HAHA GOT EM';
 
 // replsocketprefix - the prefix for the repl sockets to be listening on
 // replsocketmode - the file mode bits to use for the repl sockets
-exports.replsocketprefix = './logs/repl/';
+exports.replsocketprefix= './logs/repl/';
 exports.replsocketmode = 0600;
+
 
 // permissions and groups:
 //   Each entry in `grouplist' is a seperate group. Some of the members are "special"
@@ -210,8 +228,6 @@ exports.replsocketmode = 0600;
 //     - promote: Promoting and demoting. Will only work if the target user's current
 //                  group and target group are both in jurisdiction.
 //     - room<rank>: /roompromote to <rank> (eg. roomvoice)
-//     - makeroom: Create/delete chatrooms, and set modjoin/roomdesc/privacy
-//     - editroom: Set modjoin/privacy only for battles/groupchats
 //     - ban: Banning and unbanning.
 //     - mute: Muting and unmuting.
 //     - lock: locking (ipmute) and unlocking.
@@ -246,15 +262,26 @@ exports.grouplist = [
 		inherit: '@',
 		jurisdiction: '@u',
 		promote: 'u',
-		roomowner: true,
-		roommod: true,
-		roomdriver: true,
 		forcewin: true,
 		declare: true,
 		modchatall: true,
 		rangeban: true,
-		makeroom: true,
-		editroom: true,
+		potd: true,
+		disableladder: true,
+		globalonly: true,
+		tournamentsmanagement: true
+	},
+	{
+		symbol: '☠',
+		id: "captain",
+		name: "Captain",
+		inherit: '@',
+		jurisdiction: '@u',
+		promote: 'u',
+		forcewin: true,
+		declare: true,
+		modchatall: true,
+		rangeban: true,
 		potd: true,
 		disableladder: true,
 		globalonly: true,
@@ -268,7 +295,6 @@ exports.grouplist = [
 		jurisdiction: 'u',
 		roommod: true,
 		roomdriver: true,
-		editroom: true,
 		declare: true,
 		modchatall: true,
 		roomonly: true,
@@ -282,9 +308,11 @@ exports.grouplist = [
 		roomvoice: true,
 		modchat: true,
 		roomonly: true,
-		editroom: true,
-		joinbattle: true
+		privateroom: true,
+		joinbattle: true,
+		battleonly: true
 	},
+	
 	{
 		symbol: '@',
 		id: "mod",
@@ -306,9 +334,9 @@ exports.grouplist = [
 		inherit: '+',
 		jurisdiction: 'u',
 		announce: true,
-		warn: '\u2605u',
+		warn: true,
 		kick: true,
-		mute: '\u2605u',
+		mute: true,
 		lock: true,
 		forcerename: true,
 		timer: true,
@@ -325,11 +353,11 @@ exports.grouplist = [
 		id: "voice",
 		name: "Voice",
 		inherit: ' ',
-		alts: 's',
 		broadcast: true
 	},
 	{
 		symbol: ' ',
-		ip: 's'
+		ip: 's',
+		alts: 's'
 	}
 ];
